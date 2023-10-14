@@ -1,36 +1,26 @@
+// import langcain from './langcain.js';
+
+responsebody = "test"
+
 const summaryBox = document.createElement('div');
-summaryBox.className = "youtube_summary_container youtube_theme_dark";
-summaryBox.innerHTML =  <button data-modal-target="#modal">Open Modal</button>
-  <div class="modal" id="modal">
-    <div class="modal-header">
-        
-
-        <div class="bar">
-
-            <div class="title"> "  "</div>
+// summaryBox.className = "youtube_summary_container youtube_theme_dark";
+summaryBox.innerHTML =
+    `<div class="modal" id="modal">
+        <img style="width:24px;height:24px;" src="${chrome.runtime.getURL('images/v-48.png')}">
+        <div class="modal-header">
+            <div class="bar">
+                <div class="title">Summary box</div>
+            </div>
+            <div class = "lbar"></div>
+            <div class = "rbar"></div>
+            <button data-close-button class="close-button">&times;</button>
         </div>
-        <div class = "lbar">
+        <div class="modal-body">
+            <div id="api-data-container">${responsebody}</div>
         </div>
-        <div class = "rbar">
-        </div>
-      <button data-close-button class="close-button">&times;</button>
+        <div class="textgen">Hello2</div>
+    </div>`
 
-    
-
-    </div>
-
-    <div class="modal-body">
-        <div id="api-data-container">
-            
-          </div>
-    </div>
-
-
-    <div class="textgen">
-
-    </div>
-  </div>
- 
 const selectAndExplainButton = document.createElement('button');
 selectAndExplainButton.className = "ytp-fullscreen-button ytp-button";
 selectAndExplainButton.setAttribute("data-priority", "0");
@@ -51,7 +41,7 @@ selectAndExplainButton.addEventListener('click', function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const screenshotDataURL = canvas.toDataURL('image/png');
-    
+
     // Create a new HTML document
     const newTabDocument = document.implementation.createHTMLDocument("Image");
     const newTabBody = newTabDocument.body;

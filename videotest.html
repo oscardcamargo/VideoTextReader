@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>Video Selection</title>
+</head>
+
+<body>
+    <video id="video" loop="" controls="">
+        <source type="video/mp4" src="https://i.imgur.com/S5l1qyN.mp4">
+    </video>
+    <canvas id="canvas"></canvas>
+    <button onclick="selectRectangle()">Select Rectangle</button>
+    <script>
+        const video = document.getElementById('video');
+        console.log(video)
+        const canvas = document.getElementById('canvas');
+        console.log(canvas)
+        const ctx = canvas.getContext('2d');
+        let selection = null;
+
+        video.addEventListener('play', () => {
+            console.log("playing")
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+        });
+
+        function selectRectangle() {
+            // Create a selection rectangle
+            selection = {
+                x: 50, // Replace with your desired starting X coordinate
+                y: 50, // Replace with your desired starting Y coordinate
+                width: 100, // Replace with your desired width
+                height: 100, // Replace with your desired height
+            };
+
+            // Draw the selection on the canvas
+            drawSelection();
+        }
+
+        function drawSelection() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw the video frame
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Draw the selection rectangle
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(selection.x, selection.y, selection.width, selection.height);
+        }
+    </script>
+
+
+</body>
+
+</html>
