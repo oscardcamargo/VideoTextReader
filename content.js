@@ -112,22 +112,26 @@ selectAndExplainButton.addEventListener('click', function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const screenshotDataURL = canvas.toDataURL('image/png');
-    console.log(screenshotDataURL);
-    // var string = doc.output('datauristring');
-    // var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
-    // var x = window.open();
-    // x.document.open();
-    // x.document.write(iframe);
-    // x.document.close();
-    // window.open(screenshotDataURL, '_blank');
-    // Create a temporary download link to save the screenshot
-    const downloadLink = document.createElement('a');
-    downloadLink.href = screenshotDataURL;
-    // downloadLink.download = 'screenshot.png';
-    downloadLink.target = '_blank';
+    
+    // Create a new HTML document
+    const newTabDocument = document.implementation.createHTMLDocument("Image");
+    const newTabBody = newTabDocument.body;
 
-    // Trigger a click on the download link to save the screenshot
-    downloadLink.click();
+    // Create an image element in the new document
+    const newImage = new Image();
+    newImage.src = screenshotDataURL;
+
+    // Append the image to the body of the new document
+    newTabBody.appendChild(newImage);
+
+    // Serialize the new document to HTML
+    const newTabContent = newTabDocument.documentElement.outerHTML;
+
+    // Open the new tab with the content
+    const newTab = window.open();
+    newTab.document.open();
+    newTab.document.write(newTabContent);
+    newTab.document.close();
 
     // const secondaryBox = document.querySelector("#secondary");
     // if (secondaryBox) {
