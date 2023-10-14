@@ -1,0 +1,35 @@
+{
+    "manifest_version": 3,
+    "name": "VideoTextReader",
+    "version": "1.0",
+    "description": "A Chrome extension for reading text on YouTube videos",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "webNavigation"
+    ],
+    "host_permissions": [
+        "https://www.youtube.com/watch?v=*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.youtube.com/watch?*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/v-16.png",
+            "48": "images/v-48.png",
+            "128": "images/v-128.png"
+        }
+    }
+}
