@@ -104,12 +104,35 @@ selectAndExplainButton.innerHTML =
 
 // Attach a click event to the button
 selectAndExplainButton.addEventListener('click', function () {
-    // alert('selecting and explaining');
-    const secondaryBox = document.querySelector("#secondary");
-    if (secondaryBox) {
-        console.log(chrome.runtime.getURL('images/v-48.png'));
-        secondaryBox.prepend(summaryBox);
-    }
+    const video = document.querySelector("#movie_player > div.html5-video-container > video");
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const screenshotDataURL = canvas.toDataURL('image/png');
+    console.log(screenshotDataURL);
+    // var string = doc.output('datauristring');
+    // var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+    // var x = window.open();
+    // x.document.open();
+    // x.document.write(iframe);
+    // x.document.close();
+    // window.open(screenshotDataURL, '_blank');
+    // Create a temporary download link to save the screenshot
+    const downloadLink = document.createElement('a');
+    downloadLink.href = screenshotDataURL;
+    // downloadLink.download = 'screenshot.png';
+    downloadLink.target = '_blank';
+
+    // Trigger a click on the download link to save the screenshot
+    downloadLink.click();
+
+    // const secondaryBox = document.querySelector("#secondary");
+    // if (secondaryBox) {
+    //     secondaryBox.prepend(summaryBox);
+    // }
 });
 
 // Create summarize button element
@@ -126,7 +149,10 @@ summarizeButton.innerHTML =
 // Attach a click event to the button
 summarizeButton.addEventListener('click', function () {
     // Add your logic to open the box or perform other actions here
-    alert('summarizing');
+    const secondaryBox = document.querySelector("#secondary");
+    if (secondaryBox) {
+        secondaryBox.prepend(summaryBox);
+    }
 });
 
 // Append the buttons to the YouTube page
