@@ -31,5 +31,16 @@
             "48": "images/v-48.png",
             "128": "images/v-128.png"
         }
-    }
+    },
+    "icons": {
+        "16": "images/v-16.png",
+        "48": "images/v-48.png",
+        "128": "images/v-128.png"
+    },
+    "web_accessible_resources": [
+        {
+            "resources": ["images/v-48.png"],
+            "matches": ["<all_urls>"]
+        }
+    ]
 }
