@@ -1,28 +1,6 @@
 console.log("running");
 import { genSummary } from './langchain.js';
 
-// const responsebody = await mainFunction();
-
-
-const summaryBox = document.createElement('div');
-// summaryBox.className = "youtube_summary_container youtube_theme_dark";
-summaryBox.innerHTML =
-    `<div class="modal" id="modal">
-        <img style="width:24px;height:24px;" src="${chrome.runtime.getURL('images/v-48.png')}">
-        <div class="modal-header">
-            <div class="bar">
-                <div class="title">Summary box</div>
-            </div>
-            <div class = "lbar"></div>
-            <div class = "rbar"></div>
-            <button data-close-button class="close-button">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div id="api-data-container">${responsebody}</div>
-        </div>
-        <div class="textgen">Hello2</div>
-    </div>`
-
 const selectAndExplainButton = document.createElement('button');
 selectAndExplainButton.className = "ytp-fullscreen-button ytp-button";
 selectAndExplainButton.setAttribute("data-priority", "0");
@@ -34,7 +12,7 @@ selectAndExplainButton.innerHTML =
     </svg>`
 
 // Attach a click event to the button
-selectAndExplainButton.addEventListener('click', function () {
+selectAndExplainButton.addEventListener('click', async function () {
     chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
         console.log("OpenAIAPIKey: " + result.OpenAIAPIKey);
     });
@@ -52,12 +30,35 @@ selectAndExplainButton.addEventListener('click', function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const screenshotDataURL = canvas.toDataURL('image/png');
-    const study_guide = genSummary(screenshotDataURL);
+    const study_guide = await genSummary(screenshotDataURL);
+    console.log("study_guide");
+    console.log(study_guide);
 
+    const summaryBox = document.createElement('div');
+    summaryBox.innerHTML =
+        `<div class="modal" id="modal">
+        <img style="width:24px;height:24px;" src="${chrome.runtime.getURL('images/v-48.png')}">
+        <div class="modal-header">
+            <div class="bar">
+                <div class="title">Summary box</div>
+            </div>
+            <div class = "lbar"></div>
+            <div class = "rbar"></div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="api-data-container">${study_guide}</div>
+        </div>
+        <div class="textgen"></div>
+    </div>`
+    const secondaryBox = document.querySelector("#secondary");
+    if (secondaryBox) {
+        secondaryBox.prepend(summaryBox);
+    }
 
-    // Create a new HTML document
-    const newTabDocument = document.implementation.createHTMLDocument("Image");
-    const newTabBody = newTabDocument.body;
+    // // Create a new HTML document
+    // const newTabDocument = document.implementation.createHTMLDocument("Image");
+    // const newTabBody = newTabDocument.body;
 
     // // Create an image element in the new document
     // const newImage = new Image();
@@ -74,11 +75,6 @@ selectAndExplainButton.addEventListener('click', function () {
     // newTab.document.open();
     // newTab.document.write(newTabContent);
     // newTab.document.close();
-
-    // const secondaryBox = document.querySelector("#secondary");
-    // if (secondaryBox) {
-    //     secondaryBox.prepend(summaryBox);
-    // }
 });
 
 // Create summarize button element
@@ -94,7 +90,25 @@ summarizeButton.innerHTML =
 
 // Attach a click event to the button
 summarizeButton.addEventListener('click', function () {
-    // Add your logic to open the box or perform other actions here
+    const responsebody = "test";
+    const summaryBox = document.createElement('div');
+    summaryBox.innerHTML =
+        `<div class="modal" id="modal">
+        <img style="width:24px;height:24px;" src="${chrome.runtime.getURL('images/v-48.png')}">
+        <div class="modal-header">
+            <div class="bar">
+                <div class="title">Summary box</div>
+            </div>
+            <div class = "lbar"></div>
+            <div class = "rbar"></div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="api-data-container">${responsebody}</div>
+        </div>
+        <div class="textgen">Hello2</div>
+    </div>`
+
     const secondaryBox = document.querySelector("#secondary");
     if (secondaryBox) {
         secondaryBox.prepend(summaryBox);
