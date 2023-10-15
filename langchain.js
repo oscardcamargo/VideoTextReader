@@ -1,32 +1,44 @@
-import {DetectDocumentTextCommand, TextractClient} from "@aws-sdk/client-textract";
-import dotenv from 'dotenv';
-dotenv.config();
+import { DetectDocumentTextCommand, TextractClient } from "@aws-sdk/client-textract";
+// import dotenv from 'dotenv';
+// dotenv.config();
+let OpenAIAPIKey = "";
+chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
+    OpenAIAPIKey = result.OpenAIAPIKey;
+});
+let AWSAPIKey = "";
+chrome.storage.local.get(["AWSAPIKey"]).then((result) => {
+    AWSAPIKey = result.AWSAPIKey;
+});
+let AWSAPISecret = "";
+chrome.storage.local.get(["AWSAPISecret"]).then((result) => {
+    AWSAPISecret = result.AWSAPISecret;
+});
 import { PromptTemplate } from "langchain/prompts";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import fs from "fs";
 
 async function mainFunction() {
 
-// import AWS  from 'aws-sdk';
-// const textract = new AWS.Textract();
+    // import AWS  from 'aws-sdk';
+    // const textract = new AWS.Textract();
 
-// // Decode Base64 image
-// const base64Image = 'your_base64_encoded_image_string_here';
-// const decodedImage = Buffer.from(base64Image, 'base64');
-//
-// const params = {
-//     Document: {
-//         Bytes: decodedImage
-//     },
-//     FeatureTypes: ['TABLES', 'FORMS']
-// };
-//
-// textract.analyzeDocument(params, function(err, data) {
-//     if (err) console.log(err, err.stack); // an error occurred
-//     else     console.log(data);           // successful response
-// });
+    // // Decode Base64 image
+    // const base64Image = 'your_base64_encoded_image_string_here';
+    // const decodedImage = Buffer.from(base64Image, 'base64');
+    //
+    // const params = {
+    //     Document: {
+    //         Bytes: decodedImage
+    //     },
+    //     FeatureTypes: ['TABLES', 'FORMS']
+    // };
+    //
+    // textract.analyzeDocument(params, function(err, data) {
+    //     if (err) console.log(err, err.stack); // an error occurred
+    //     else     console.log(data);           // successful response
+    // });
 
-/// AWS text extraction.
+    /// AWS text extraction.
     const run = async () => {
 
         // Initialize Textract client
@@ -68,7 +80,7 @@ async function mainFunction() {
 
 
 
-//OpenAi ChatGpt interpretation of image
+    //OpenAi ChatGpt interpretation of image
     const prompt1 = PromptTemplate.fromTemplate(
         'Rewrite {extractedText} so that it is readible. Create a summary of the text. Write one short question based on the text. Output only what I ask and nothing else'
     );
