@@ -1,6 +1,8 @@
 # VideoTextReader
 
 VideoTextReader is a Google Chrome extension developed for the purpose of explaining text present in frames and videos chosen by the user. The functionality of this extension is based on GPT-3.5 and Amazon Textract.
+
+This product was mainly inspired by one of GPT-4's newest feature, the ability of analyzing and interpreting images and create text, like descriptions, based on them.
 # Installation #
 
 Using the terminal, clone this repository using the following command:
