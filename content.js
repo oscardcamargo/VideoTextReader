@@ -1,5 +1,5 @@
 console.log("running");
-import { genExplanation } from './langchain.js';
+import { genExplanation, genStudyGuide } from './langchain.js';
 
 const modal = document.createElement('div');
 modal.className = "modal";
@@ -20,12 +20,7 @@ selectAndExplainButton.className = "ytp-fullscreen-button ytp-button";
 selectAndExplainButton.setAttribute("data-priority", "0");
 selectAndExplainButton.setAttribute("data-title-no-tooltip", "Select and Explain");
 selectAndExplainButton.setAttribute("title", "Select and Explain");
-// selectAndExplainButton.innerHTML =
-//     `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36">
-//         <text x="10" y="24" font-family="Arial" font-size="24" fill="white">E</text>
-//     </svg>`
 selectAndExplainButton.innerHTML = `<img style="height:100%;" src="${chrome.runtime.getURL('images/Explain.png')}">`
-
 // Attach a click event to the button
 selectAndExplainButton.addEventListener('click', async function () {
     // Add modal to page if not already inserted
@@ -70,14 +65,9 @@ generateStudyGuideButton.className = "ytp-fullscreen-button ytp-button";
 generateStudyGuideButton.setAttribute("data-priority", "-1");
 generateStudyGuideButton.setAttribute("data-title-no-tooltip", "Generate Study Guide");
 generateStudyGuideButton.setAttribute("title", "Generate Study Guide");
-// generateStudyGuideButton.innerHTML =
-//     `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36">
-//         <text x="10" y="24" font-family="Arial" font-size="24" fill="white">S</text>
-//     </svg>`
 generateStudyGuideButton.innerHTML = `<img style="height:100%;" src="${chrome.runtime.getURL('images/StudyGuide.png')}">`
-
 // Attach a click event to the button
-generateStudyGuideButton.addEventListener('click', function () {
+generateStudyGuideButton.addEventListener('click', async function () {
     // Add modal to page if not already inserted
     const secondaryBox = document.querySelector("#secondary");
     if (secondaryBox && !modalAdded) {
@@ -92,12 +82,16 @@ generateStudyGuideButton.addEventListener('click', function () {
     // Loading response
     const response = document.querySelector("#response");
     if (response) {
-        response.textContent = "Reading transcript...";
+        response.textContent = "Generating study guide...";
     }
+
+    const studyguide = await genStudyGuide();
+    console.log("studyguide");
+    console.log(studyguide);
 
     // Update the content of the #response element
     if (response) {
-        response.textContent = "explaining";
+        response.textContent = studyguide;
     }
 });
 
