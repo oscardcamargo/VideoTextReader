@@ -1,27 +1,50 @@
 console.log("running");
-import { genSummary } from './langchain.js';
+import { genExplanation } from './langchain.js';
+
+const modal = document.createElement('div');
+modal.className = "modal";
+modal.innerHTML =
+    `<div class="modal-header">
+        <a target="_blank" style="width: 24px;height: 24px;">
+            <img style="width:24px;height:24px;" src="${chrome.runtime.getURL('images/v-48.png')}">
+        </a>
+        <div class="title">Explain</div>
+        <button id="close-button">×</button>
+    </div>
+    <div id="response">
+    </div>`
+let modalAdded = false;
 
 const selectAndExplainButton = document.createElement('button');
 selectAndExplainButton.className = "ytp-fullscreen-button ytp-button";
 selectAndExplainButton.setAttribute("data-priority", "0");
 selectAndExplainButton.setAttribute("data-title-no-tooltip", "Select and Explain");
 selectAndExplainButton.setAttribute("title", "Select and Explain");
-selectAndExplainButton.innerHTML =
-    `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36">
-        <text x="10" y="24" font-family="Arial" font-size="24" fill="white">E</text>
-    </svg>`
+// selectAndExplainButton.innerHTML =
+//     `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36">
+//         <text x="10" y="24" font-family="Arial" font-size="24" fill="white">E</text>
+//     </svg>`
+selectAndExplainButton.innerHTML = `<img style="height:100%;" src="${chrome.runtime.getURL('images/Explain.png')}">`
 
 // Attach a click event to the button
 selectAndExplainButton.addEventListener('click', async function () {
-    chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
-        console.log("OpenAIAPIKey: " + result.OpenAIAPIKey);
-    });
-    chrome.storage.local.get(["AWSAPIKey"]).then((result) => {
-        console.log("AWSAPIKey: " + result.AWSAPIKey);
-    });
-    chrome.storage.local.get(["AWSAPISecret"]).then((result) => {
-        console.log("AWSAPISecret: " + result.AWSAPISecret);
-    });
+    // Add modal to page if not already inserted
+    const secondaryBox = document.querySelector("#secondary");
+    if (secondaryBox && !modalAdded) {
+        secondaryBox.prepend(modal);
+        modalAdded = true;
+        document.getElementById("close-button").addEventListener('click', function () {
+            modal.remove();
+            modalAdded = false;
+        });
+    }
+
+    // Loading response
+    const response = document.querySelector("#response");
+    if (response) {
+        response.textContent = "Analyzing image...";
+    }
+
     const video = document.querySelector("#movie_player > div.html5-video-container > video");
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -30,88 +53,51 @@ selectAndExplainButton.addEventListener('click', async function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const screenshotDataURL = canvas.toDataURL('image/png');
-    const study_guide = await genSummary(screenshotDataURL);
-    console.log("study_guide");
-    console.log(study_guide);
+    const explanation = await genExplanation(screenshotDataURL);
 
-    const summaryBox = document.createElement('div');
-    summaryBox.innerHTML =
-        `<div class="modal" id="modal">
-        <img style="width:24px;height:24px;" src="${chrome.runtime.getURL('images/v-48.png')}">
-        <div class="modal-header">
-            <div class="bar">
-                <div class="title">Summary box</div>
-            </div>
-            <div class = "lbar"></div>
-            <div class = "rbar"></div>
-            <button data-close-button class="close-button">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div id="api-data-container">${study_guide}</div>
-        </div>
-        <div class="textgen"></div>
-    </div>`
-    const secondaryBox = document.querySelector("#secondary");
-    if (secondaryBox) {
-        secondaryBox.prepend(summaryBox);
+    console.log("explanation");
+    console.log(explanation);
+
+    // Update the content of the #response element
+    if (response) {
+        response.textContent = explanation;
     }
-
-    // // Create a new HTML document
-    // const newTabDocument = document.implementation.createHTMLDocument("Image");
-    // const newTabBody = newTabDocument.body;
-
-    // // Create an image element in the new document
-    // const newImage = new Image();
-    // newImage.src = screenshotDataURL;
-
-    // // Append the image to the body of the new document
-    // newTabBody.appendChild(newImage);
-
-    // // Serialize the new document to HTML
-    // const newTabContent = newTabDocument.documentElement.outerHTML;
-
-    // // Open the new tab with the content
-    // const newTab = window.open();
-    // newTab.document.open();
-    // newTab.document.write(newTabContent);
-    // newTab.document.close();
 });
 
-// Create summarize button element
-const summarizeButton = document.createElement('button');
-summarizeButton.className = "ytp-fullscreen-button ytp-button";
-summarizeButton.setAttribute("data-priority", "-1");
-summarizeButton.setAttribute("data-title-no-tooltip", "Summarize");
-summarizeButton.setAttribute("title", "Summarize");
-summarizeButton.innerHTML =
-    `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36">
-        <text x="10" y="24" font-family="Arial" font-size="24" fill="white">S</text>
-    </svg>`
+// Create generateStudyGuide button
+const generateStudyGuideButton = document.createElement('button');
+generateStudyGuideButton.className = "ytp-fullscreen-button ytp-button";
+generateStudyGuideButton.setAttribute("data-priority", "-1");
+generateStudyGuideButton.setAttribute("data-title-no-tooltip", "Generate Study Guide");
+generateStudyGuideButton.setAttribute("title", "Generate Study Guide");
+// generateStudyGuideButton.innerHTML =
+//     `<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36">
+//         <text x="10" y="24" font-family="Arial" font-size="24" fill="white">S</text>
+//     </svg>`
+generateStudyGuideButton.innerHTML = `<img style="height:100%;" src="${chrome.runtime.getURL('images/StudyGuide.png')}">`
 
 // Attach a click event to the button
-summarizeButton.addEventListener('click', function () {
-    const responsebody = "test";
-    const summaryBox = document.createElement('div');
-    summaryBox.innerHTML =
-        `<div class="modal" id="modal">
-        <img style="width:24px;height:24px;" src="${chrome.runtime.getURL('images/v-48.png')}">
-        <div class="modal-header">
-            <div class="bar">
-                <div class="title">Summary box</div>
-            </div>
-            <div class = "lbar"></div>
-            <div class = "rbar"></div>
-            <button data-close-button class="close-button">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div id="api-data-container">${responsebody}</div>
-        </div>
-        <div class="textgen">Hello2</div>
-    </div>`
-
+generateStudyGuideButton.addEventListener('click', function () {
+    // Add modal to page if not already inserted
     const secondaryBox = document.querySelector("#secondary");
-    if (secondaryBox) {
-        secondaryBox.prepend(summaryBox);
+    if (secondaryBox && !modalAdded) {
+        secondaryBox.prepend(modal);
+        modalAdded = true;
+        document.getElementById("close-button").addEventListener('click', function () {
+            modal.remove();
+            modalAdded = false;
+        });
+    }
+
+    // Loading response
+    const response = document.querySelector("#response");
+    if (response) {
+        response.textContent = "Reading transcript...";
+    }
+
+    // Update the content of the #response element
+    if (response) {
+        response.textContent = "explaining";
     }
 });
 
@@ -119,5 +105,5 @@ summarizeButton.addEventListener('click', function () {
 const controlBar = document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls");
 if (controlBar) {
     controlBar.prepend(selectAndExplainButton);
-    controlBar.prepend(summarizeButton);
+    controlBar.prepend(generateStudyGuideButton);
 }

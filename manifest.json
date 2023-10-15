@@ -45,7 +45,8 @@
         {
             "resources": [
                 "images/v-48.png",
-                "video_frame2.jpeg"
+                "images/StudyGuide.png",
+                "images/Explain.png"
             ],
             "matches": [
                 "<all_urls>"
