@@ -1,8 +1,8 @@
 console.log("running");
-import { mainFunction } from './langchain.js';
+// import { mainFunction } from './langchain.js';
 
-const responsebody = await mainFunction();
-// const responsebody = "Hello";
+// const responsebody = await mainFunction();
+const responsebody = "Hello";
 
 const summaryBox = document.createElement('div');
 // summaryBox.className = "youtube_summary_container youtube_theme_dark";
@@ -35,6 +35,9 @@ selectAndExplainButton.innerHTML =
 
 // Attach a click event to the button
 selectAndExplainButton.addEventListener('click', function () {
+    chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
+        console.log("Value currently is " + result.OpenAIAPIKey);
+    });
     const video = document.querySelector("#movie_player > div.html5-video-container > video");
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');

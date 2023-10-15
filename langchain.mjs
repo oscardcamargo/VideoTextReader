@@ -1,10 +1,9 @@
 import {DetectDocumentTextCommand, TextractClient} from "@aws-sdk/client-textract";
 import dotenv from 'dotenv';
-import {PromptTemplate} from "langchain/prompts";
-import {ChatOpenAI} from "langchain/chat_models/openai";
-import fs from "fs";
-
 dotenv.config();
+import { PromptTemplate } from "langchain/prompts";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import fs from "fs";
 
 const model = new ChatOpenAI({
     modelName: 'gpt-3.5-turbo',
@@ -62,9 +61,13 @@ async function genSummary() {
     const result = await chain.invoke({
         extractedText: extractedText,
     });
-    
-    return result.content
+
+
+    const body_output = result.content
+
+    return body_output
 }
+
 
 async function genStudyGuide() {
     const prompt = PromptTemplate.fromTemplate(
@@ -79,13 +82,10 @@ async function genStudyGuide() {
         extractedText: extractedText
     });
 
-    return result.content
-}
-async function mainFunction(){
-    const output = await genSummary()
-    console.log(output);
-}
 
-await mainFunction();
+    const body_output = result.content;
+
+    return body_output
+}
 
 export { genSummary, genStudyGuide };
