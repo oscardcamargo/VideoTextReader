@@ -1,6 +1,7 @@
 console.log("running");
 import { genExplanation, genStudyGuide } from './langchain.js';
 
+// Create modal
 const modal = document.createElement('div');
 modal.className = "modal";
 modal.innerHTML =
@@ -15,6 +16,8 @@ modal.innerHTML =
     </div>`
 let modalAdded = false;
 
+
+// Create selectAndExplain button
 const selectAndExplainButton = document.createElement('button');
 selectAndExplainButton.className = "ytp-fullscreen-button ytp-button";
 selectAndExplainButton.setAttribute("data-priority", "0");
@@ -59,6 +62,7 @@ selectAndExplainButton.addEventListener('click', async function () {
     }
 });
 
+
 // Create generateStudyGuide button
 const generateStudyGuideButton = document.createElement('button');
 generateStudyGuideButton.className = "ytp-fullscreen-button ytp-button";
@@ -94,6 +98,7 @@ generateStudyGuideButton.addEventListener('click', async function () {
         response.textContent = studyguide;
     }
 });
+
 
 // Append the buttons to the YouTube page
 const controlBar = document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls");

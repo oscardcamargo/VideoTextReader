@@ -73,28 +73,28 @@ async function genExplanation(imageData) {
     return result.content
 }
 
-function extractVideoId(url) {
-    // Regular expression to extract the video_id from the YouTube URL
-    const regex = /[?&]v=([^&]+)/;
-    const match = url.match(regex);
+// function extractVideoId(url) {
+//     // Regular expression to extract the video_id from the YouTube URL
+//     const regex = /[?&]v=([^&]+)/;
+//     const match = url.match(regex);
 
-    if (match) {
-        return match[1];
-    } else {
-        return null; // Video ID not found in the URL
-    }
-}
+//     if (match) {
+//         return match[1];
+//     } else {
+//         return null; // Video ID not found in the URL
+//     }
+// }
 
 async function genStudyGuide() {
     console.log("genStudyGuide");
     // Video ID of the YouTube video you want to get the transcript for
-    const videoId = extractVideoId(location.href);
-    if (videoId) {
-        // Now you have the video_id.
-        console.log(videoId);
-    } else {
-        console.log("Video ID not found in the URL.");
-    }
+    // const videoId = extractVideoId(location.href);
+    // if (videoId) {
+    //     // Now you have the video_id.
+    //     console.log(videoId);
+    // } else {
+    //     console.log("Video ID not found in the URL.");
+    // }
 
     // URL to fetch captions for a video
     // const captionsUrl = `https://www.googleapis.com/youtube/v3/captions?part=snippet&videoId=${videoId}&key=${YouTubeAPIKey}`;
