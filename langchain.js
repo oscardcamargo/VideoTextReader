@@ -59,7 +59,7 @@ async function run(base64Data) {
 async function genExplanation(imageData) {
     console.log("genExplanation");
     const prompt = PromptTemplate.fromTemplate(
-        'Explain in one paragraph {extractedText}. Output only what I ask and nothing else'
+        'Explain in one  short paragraph {extractedText}. Describe key insights. Write a practice questions with an answer. Output only what I ask and nothing else'
     );
 
     const chain = prompt.pipe(model);
