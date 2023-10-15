@@ -2,14 +2,15 @@
 *::after,
 *::before {
   box-sizing: border-box;
+  margin-right: 10px;
 }
 
 .bar {
-  width: 100%;
+  width: 1500px;
   height: 55px;
-  background-color: #91d0ba;
-  border-radius: 10px;
-
+  background-color: #918f8cc9;
+  border-radius: 5px;
+  z-index: 1000;
 }
 
 .lbar {
@@ -26,7 +27,7 @@
 
   border-style: solid;
   border-width: 1px;
-  color: #323534;
+  color: #f1f5f4;
   position: sticky;
 }
 
@@ -63,9 +64,9 @@
 }
 
 .modal-header {
-  background-color: #91d0ba;
+  background-color: #0c0c0c;
   display: flex;
-  border-radius: 10px;
+  border-radius: 5px;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid black;
@@ -79,10 +80,11 @@
 .modal-header .close-button {
   cursor: pointer;
   border: none;
-
-  background-color: #91d0ba;
-  font-size: 1.25rem;
+  border-radius: 2px;
+  background-color: #f7f3f3;
+  font-size: 2.5rem;
   font-weight: bold;
+  margin-right: 12px;
 }
 
 .modal-body {
@@ -91,4 +93,8 @@
   max-height: 100%;
   overflow: auto;
 
+}
+
+p{
+  color: white;
 }
