@@ -1,8 +1,8 @@
 console.log("running");
-// import { mainFunction } from './langchain.js';
+import { genSummary } from './langchain.js';
 
 // const responsebody = await mainFunction();
-const responsebody = "Hello";
+
 
 const summaryBox = document.createElement('div');
 // summaryBox.className = "youtube_summary_container youtube_theme_dark";
@@ -52,6 +52,8 @@ selectAndExplainButton.addEventListener('click', function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const screenshotDataURL = canvas.toDataURL('image/png');
+    const study_guide = genSummary(screenshotDataURL);
+
 
     // Create a new HTML document
     const newTabDocument = document.implementation.createHTMLDocument("Image");

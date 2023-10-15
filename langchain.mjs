@@ -1,38 +1,49 @@
 import { DetectDocumentTextCommand, TextractClient } from "@aws-sdk/client-textract";
-let OpenAIAPIKey = "";
-chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
-    OpenAIAPIKey = result.OpenAIAPIKey;
-});
-let AWSAPIKey = "";
-chrome.storage.local.get(["AWSAPIKey"]).then((result) => {
-    AWSAPIKey = result.AWSAPIKey;
-});
-let AWSAPISecret = "";
-chrome.storage.local.get(["AWSAPISecret"]).then((result) => {
-    AWSAPISecret = result.AWSAPISecret;
-});
+let OpenAIAPIKey = "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";
+// chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
+//     OpenAIAPIKey = result.OpenAIAPIKey;
+// });
+let AWSAPIKey = "AKIAYRVDPATQEIRAC3EL";
+// chrome.storage.local.get(["AWSAPIKey"]).then((result) => {
+//     AWSAPIKey = result.AWSAPIKey;
+// });
+let AWSAPISecret = "h+ZhhUXzNhSJE376uJ8zMXuX3QfScFKluZrRf/kz";
+// chrome.storage.local.get(["AWSAPISecret"]).then((result) => {
+//     AWSAPISecret = result.AWSAPISecret;
+// });
+
 import { PromptTemplate } from "langchain/prompts";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import fs from "fs";
+import AWS from "aws-sdk";
 
 const model = new ChatOpenAI({
     modelName: 'gpt-3.5-turbo',
-    apiKey: OpenAIAPIKey
+    apiKey: "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"
+
 });
 
-async function run(){
+const client = new TextractClient({
+    region: "us-east-1",
+    credentials: {
+        secretAccessKey: AWSAPISecret,
+        accessKeyId: AWSAPIKey,
+    }
+});
+
+
+async function run(base64Data){
     // Initialize Textract client
-    const client = new TextractClient({
-        region: "us-east-1",
-        credentials: {
-            secretAccessKey: AWSAPISecret,
-            accessKeyId: AWSAPIKey,
-        }
 
-    });
 
-    // Read image file
-    const fileBuffer = fs.readFileSync("video_frame2.jpeg");
+    // Read base64 encoded image from text file
+    // let base64Data = fs.readFileSync('base64-example.txt', 'utf8');
+
+    // Remove the base64 heading if present
+    base64Data = base64Data.split(',')[1] || base64Data;
+
+    // Convert base64 to Buffer
+    const fileBuffer = Buffer.from(base64Data, 'base64');
 
     // Prepare command
     const command = new DetectDocumentTextCommand({
@@ -47,7 +58,6 @@ async function run(){
 
         // Parse result
         const rawText = result.Blocks.map((block) => block.Text).join(" ");
-        // const rawText = "print(\"hello world\")";
         console.log("Extracted Text:", rawText);
         return rawText;
 
@@ -55,28 +65,23 @@ async function run(){
         console.error("An error occurred:", err);
         return "error";
     }
-
 }
+async function genSummary(imageData) {
 
-async function genSummary() {
     const prompt = PromptTemplate.fromTemplate(
         'Explain in one paragraph {extractedText}. Output only what I ask and nothing else'
     );
 
     const chain = prompt.pipe(model);
 
-    const extractedText = await run();
+    const extractedText = await run(imageData);
 
     const result = await chain.invoke({
         extractedText: extractedText,
     });
 
-
-    const body_output = result.content
-
-    return body_output
+    return result.content
 }
-
 
 async function genStudyGuide() {
     const prompt = PromptTemplate.fromTemplate(
@@ -91,10 +96,10 @@ async function genStudyGuide() {
         extractedText: extractedText
     });
 
-
-    const body_output = result.content;
-
-    return body_output
+    return result.content
 }
+
+// let base64Data = fs.readFileSync('base64-example.txt', 'utf8');
+// genSummary(base64Data);
 
 export { genSummary, genStudyGuide };
