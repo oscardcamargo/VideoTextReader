@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Video Text Reader",
   "main": "content.js",
-  "type": "module",
   "scripts": {
     "build": "webpack --mode=production"
   },
