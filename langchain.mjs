@@ -1,23 +1,32 @@
-import {DetectDocumentTextCommand, TextractClient} from "@aws-sdk/client-textract";
-import dotenv from 'dotenv';
-dotenv.config();
+import { DetectDocumentTextCommand, TextractClient } from "@aws-sdk/client-textract";
+let OpenAIAPIKey = "";
+chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
+    OpenAIAPIKey = result.OpenAIAPIKey;
+});
+let AWSAPIKey = "";
+chrome.storage.local.get(["AWSAPIKey"]).then((result) => {
+    AWSAPIKey = result.AWSAPIKey;
+});
+let AWSAPISecret = "";
+chrome.storage.local.get(["AWSAPISecret"]).then((result) => {
+    AWSAPISecret = result.AWSAPISecret;
+});
 import { PromptTemplate } from "langchain/prompts";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import fs from "fs";
 
 const model = new ChatOpenAI({
     modelName: 'gpt-3.5-turbo',
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: OpenAIAPIKey
 });
 
 async function run(){
-
     // Initialize Textract client
     const client = new TextractClient({
         region: "us-east-1",
         credentials: {
-            secretAccessKey: process.env.AWS_API_SECRET,
-            accessKeyId: process.env.AWS_API_KEY,
+            secretAccessKey: AWSAPISecret,
+            accessKeyId: AWSAPIKey,
         }
 
     });
