@@ -1,6 +1,7 @@
-// import langcain from './langcain.js';
+console.log("running");
+import { mainFunction } from './langchain.js';
 
-responsebody = "test"
+const responsebody = await mainFunction();
 
 const summaryBox = document.createElement('div');
 // summaryBox.className = "youtube_summary_container youtube_theme_dark";

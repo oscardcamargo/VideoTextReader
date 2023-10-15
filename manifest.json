@@ -20,7 +20,8 @@
                 "https://www.youtube.com/watch?*"
             ],
             "js": [
-                "content.js"
+                "content.js",
+                "langchain.js"
             ],
             "css": [
                 "styles.css"
