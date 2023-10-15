@@ -1,8 +1,10 @@
 console.log("running");
-// import { mainFunction } from './langchain.js';
+// import { genSummary, genStudyGuide } from './langchain.js';
 
 // const responsebody = await mainFunction();
 const responsebody = "Hello";
+// const f = await genSummary();
+// console.log(f);
 
 const summaryBox = document.createElement('div');
 // summaryBox.className = "youtube_summary_container youtube_theme_dark";
@@ -52,26 +54,31 @@ selectAndExplainButton.addEventListener('click', function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const screenshotDataURL = canvas.toDataURL('image/png');
+    console.log(screenshotDataURL);
+    // const downloadimage = document.createElement('a');
+    // downloadimage.href = screenshotDataURL;
+    // downloadimage.download = 'screenshot.png';
+    // downloadimage.click();
 
-    // Create a new HTML document
-    const newTabDocument = document.implementation.createHTMLDocument("Image");
-    const newTabBody = newTabDocument.body;
+    // // Create a new HTML document
+    // const newTabDocument = document.implementation.createHTMLDocument("Image");
+    // const newTabBody = newTabDocument.body;
 
-    // Create an image element in the new document
-    const newImage = new Image();
-    newImage.src = screenshotDataURL;
+    // // Create an image element in the new document
+    // const newImage = new Image();
+    // newImage.src = screenshotDataURL;
 
-    // Append the image to the body of the new document
-    newTabBody.appendChild(newImage);
+    // // Append the image to the body of the new document
+    // newTabBody.appendChild(newImage);
 
-    // Serialize the new document to HTML
-    const newTabContent = newTabDocument.documentElement.outerHTML;
+    // // Serialize the new document to HTML
+    // const newTabContent = newTabDocument.documentElement.outerHTML;
 
-    // Open the new tab with the content
-    const newTab = window.open();
-    newTab.document.open();
-    newTab.document.write(newTabContent);
-    newTab.document.close();
+    // // Open the new tab with the content
+    // const newTab = window.open();
+    // newTab.document.open();
+    // newTab.document.write(newTabContent);
+    // newTab.document.close();
 
     // const secondaryBox = document.querySelector("#secondary");
     // if (secondaryBox) {
