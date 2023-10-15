@@ -36,7 +36,13 @@ selectAndExplainButton.innerHTML =
 // Attach a click event to the button
 selectAndExplainButton.addEventListener('click', function () {
     chrome.storage.local.get(["OpenAIAPIKey"]).then((result) => {
-        console.log("Value currently is " + result.OpenAIAPIKey);
+        console.log("OpenAIAPIKey: " + result.OpenAIAPIKey);
+    });
+    chrome.storage.local.get(["AWSAPIKey"]).then((result) => {
+        console.log("AWSAPIKey: " + result.AWSAPIKey);
+    });
+    chrome.storage.local.get(["AWSAPISecret"]).then((result) => {
+        console.log("AWSAPISecret: " + result.AWSAPISecret);
     });
     const video = document.querySelector("#movie_player > div.html5-video-container > video");
     const canvas = document.createElement('canvas');
